@@ -1,0 +1,200 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <link name="base_footprint" />
+
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <box size="${base_width} ${base_length} ${base_height}" />
+            </geometry>
+            <material name="grey" />
+            <origin xyz="0 0 ${base_height/2}" rpy="0 0 0" />
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${base_width} ${base_length} ${base_height}" />
+            </geometry>
+            <origin xyz="0 0 ${base_height/2}" rpy="0 0 0" />
+        </collision>
+        <xacro:box_inertia m="1.5" x="${base_width}" y="${base_length}" z="${base_height}"
+            o_xyz="0 0 ${base_height/2}" o_rpy="0 0 0" />
+    </link>
+
+    <link name="left_wheel_link">
+        <visual>
+            <geometry>
+                <cylinder radius="${wheel_radius}" length="${wheel_length}" />
+            </geometry>
+            <material name="red" />
+            <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
+        </visual>
+
+        <collision>
+            <geometry>
+                <cylinder radius="${wheel_radius}" length="${wheel_length}" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
+        </collision>
+
+        <xacro:cylinder_inertia m="0.030" r="${wheel_radius}" h="${wheel_length}" o_xyz="0 0 0"
+            o_rpy="0 0 0" />
+    </link>
+
+    <link name="right_wheel_link">
+        <visual>
+            <geometry>
+                <cylinder radius="${wheel_radius}" length="${wheel_length}" />
+            </geometry>
+            <material name="red" />
+            <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="${wheel_radius}" length="${wheel_length}" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
+        </collision>
+        <xacro:cylinder_inertia m="0.030" r="${wheel_radius}" h="${wheel_length}" o_xyz="0 0 0"
+            o_rpy="0 0 0" />
+    </link>
+
+
+    <link name="front_sphere_link"> <!-- caster wheel -->
+        <visual>
+            <geometry>
+                <sphere radius="${sphere_radius}" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <material name="red" />
+        </visual>
+
+        <collision>
+            <geometry>
+                <sphere radius="${sphere_radius}" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+        </collision>
+        <xacro:sphere_inertia m="0.030" r="${sphere_radius}" o_xyz="0 0 0" o_rpy="0 0 0" />
+    </link>
+
+    <link name="back_sphere_link"> <!-- caster wheel -->
+        <visual>
+            <geometry>
+                <sphere radius="${sphere_radius}" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <material name="red" />
+        </visual>
+
+        <collision>
+            <geometry>
+                <sphere radius="${sphere_radius}" />
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+        </collision>
+        <xacro:sphere_inertia m="0.030" r="${sphere_radius}" o_xyz="0 0 0" o_rpy="0 0 0" />
+    </link>
+
+    <joint name="base_footprint_base_link_joint" type="fixed">
+        <parent link="base_footprint" />
+        <child link="base_link" />
+        <origin xyz="0 0 ${0.002 + 2 * wheel_radius}" rpy="0 0 0" />
+    </joint>
+
+    <joint name="base_link_left_wheel_joint" type="continuous">
+        <parent link="base_link" />
+        <child link="left_wheel_link" />
+        <origin xyz="0 ${base_length/2 + wheel_length/2 + 0.015} -${0.002 + wheel_radius}"
+            rpy="0 0 0" />
+        <axis xyz="0 1 0" />
+    </joint>
+
+    <joint name="base_link_right_wheel_joint" type="continuous">
+        <parent link="base_link" />
+        <child link="right_wheel_link" />
+        <origin xyz="0 -${base_length/2 + wheel_length/2 + 0.015} -${0.002 + wheel_radius}"
+            rpy="0 0 0" />
+        <axis xyz="0 1 0" />
+    </joint>
+
+    <joint name="base_link_front_sphere_joint" type="fixed">
+        <parent link="base_link" />
+        <child link="front_sphere_link" />
+        <origin xyz="${base_width/2 - 0.04} 0 -${sphere_radius + 0.002}" rpy="0 0 0" />
+    </joint>
+
+    <joint name="base_link_back_sphere_joint" type="fixed">
+        <parent link="base_link" />
+        <child link="back_sphere_link" />
+        <origin xyz="-${base_width/2 - 0.04} 0 -${sphere_radius + 0.002}" rpy="0 0 0" />
+    </joint>
+
+    <!-- 1. BOYUN (SAĞ-SOL - YAW) -->
+    <link name="neck_yaw_link">
+        <visual>
+            <geometry>
+                <cylinder radius="0.02" length="0.05" />
+            </geometry>
+            <material name="grey" />
+        </visual>
+    </link>
+
+    <joint name="neck_yaw_joint" type="revolute">
+        <parent link="base_link" />
+        <child link="neck_yaw_link" />
+        <origin xyz="0 0 ${base_height}" rpy="0 0 0" /> <!-- Gövdenin tam üst ortası -->
+        <axis xyz="0 0 1" /> <!-- Z ekseninde döner (Sağ-Sol) -->
+        <limit lower="-1.57" upper="1.57" effort="10" velocity="1.0" />
+    </joint>
+
+    <!-- 2. BOYUN (YUKARI-AŞAĞI - PITCH) -->
+    <link name="neck_pitch_link">
+        <visual>
+            <geometry>
+                <sphere radius="0.03" />
+            </geometry>
+            <material name="red" />
+        </visual>
+    </link>
+
+    <joint name="neck_pitch_joint" type="revolute">
+        <parent link="neck_yaw_link" />
+        <child link="neck_pitch_link" />
+        <origin xyz="0 0 0.05" rpy="0 0 0" />
+        <axis xyz="0 1 0" /> <!-- Y ekseninde döner (Yukarı-Aşağı) -->
+        <limit lower="-0.78" upper="0.78" effort="10" velocity="1.0" />
+    </joint>
+
+    <link name="head_link">
+        <visual>
+            <geometry>
+                <box size="0.06 0.12 0.06" />
+            </geometry>
+            <material name="grey" />
+        </visual>
+    </link>
+
+    <joint name="head_joint" type="fixed">
+        <parent link="neck_pitch_link" />
+        <child link="head_link" />
+        <origin xyz="0.03 0 0" rpy="0 0 0" />
+    </joint>
+
+    <link name="left_eye_link">
+        <visual>
+            <geometry>
+                <cylinder radius="0.01" length="0.02" />
+            </geometry>
+            <material name="black" />
+            <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
+        </visual>
+    </link>
+
+    <joint name="left_eye_joint" type="revolute">
+        <parent link="head_link" />
+        <child link="left_eye_link" />
+        <origin xyz="0.03 0.03 0" rpy="0 0 0" />
+        <axis xyz="0 0 1" />
+        <limit lower="-0.5" upper="0.5" effort="1" velocity="1.0" />
+    </joint>
+</robot>
