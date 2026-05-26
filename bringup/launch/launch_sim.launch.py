@@ -9,8 +9,11 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
-
-
+_desc_share = get_package_share_directory('description')
+_gz_resource_path = os.path.dirname(_desc_share)  # .../install/description/share
+os.environ['GZ_SIM_RESOURCE_PATH'] = (
+    os.environ.get('GZ_SIM_RESOURCE_PATH', '') + ':' + _gz_resource_path
+)
 
 def generate_launch_description():
     pkg_denis_bringup = get_package_share_directory('bringup')
@@ -57,7 +60,7 @@ def generate_launch_description():
             '-name', 'denis',
             '-x', '-1.0',
             '-y', '1.0',
-            '-z', '20.0'
+            '-z', '5.23'
         ],
         output='screen'
     )
