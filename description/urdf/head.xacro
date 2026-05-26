@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <link name="head_base">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://description/mashes/head_base.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="white" />
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://description/mashes/head_base.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </collision>
+        <xacro:box_inertia m="0.11" x="0.16" y="0.16" z="0.03540" o_xyz="0 0 0" o_rpy="0 0 0" />
+    </link>
+</robot>

@@ -129,72 +129,21 @@
         <origin xyz="-${base_width/2 - 0.04} 0 -${sphere_radius + 0.002}" rpy="0 0 0" />
     </joint>
 
-    <!-- 1. BOYUN (SAĞ-SOL - YAW) -->
-    <link name="neck_yaw_link">
-        <visual>
-            <geometry>
-                <cylinder radius="0.02" length="0.05" />
-            </geometry>
-            <material name="grey" />
-        </visual>
-    </link>
-
-    <joint name="neck_yaw_joint" type="revolute">
+    <joint name="base_link_rplidar_base_link" type="fixed">
         <parent link="base_link" />
-        <child link="neck_yaw_link" />
-        <origin xyz="0 0 ${base_height}" rpy="0 0 0" /> <!-- Gövdenin tam üst ortası -->
-        <axis xyz="0 0 1" /> <!-- Z ekseninde döner (Sağ-Sol) -->
-        <limit lower="-1.57" upper="1.57" effort="10" velocity="1.0" />
+        <child link="rplidar_base_link" />
+        <origin xyz="${base_width/4} 0 ${base_height-0.005}" rpy="0 0 0" />
     </joint>
 
-    <!-- 2. BOYUN (YUKARI-AŞAĞI - PITCH) -->
-    <link name="neck_pitch_link">
-        <visual>
-            <geometry>
-                <sphere radius="0.03" />
-            </geometry>
-            <material name="red" />
-        </visual>
-    </link>
-
-    <joint name="neck_pitch_joint" type="revolute">
-        <parent link="neck_yaw_link" />
-        <child link="neck_pitch_link" />
-        <origin xyz="0 0 0.05" rpy="0 0 0" />
-        <axis xyz="0 1 0" /> <!-- Y ekseninde döner (Yukarı-Aşağı) -->
-        <limit lower="-0.78" upper="0.78" effort="10" velocity="1.0" />
+    <joint name="base_link_rplidar" type="fixed">
+        <parent link="base_link" />
+        <child link="rplidar" />
+        <origin xyz="${base_width/4} 0 ${base_height+0.057}" rpy="0 0 0" />
     </joint>
 
-    <link name="head_link">
-        <visual>
-            <geometry>
-                <box size="0.06 0.12 0.06" />
-            </geometry>
-            <material name="grey" />
-        </visual>
-    </link>
-
-    <joint name="head_joint" type="fixed">
-        <parent link="neck_pitch_link" />
-        <child link="head_link" />
-        <origin xyz="0.03 0 0" rpy="0 0 0" />
-    </joint>
-
-    <link name="left_eye_link">
-        <visual>
-            <geometry>
-                <cylinder radius="0.01" length="0.02" />
-            </geometry>
-            <material name="black" />
-            <origin xyz="0 0 0" rpy="0 ${pi/2} 0" />
-        </visual>
-    </link>
-
-    <joint name="left_eye_joint" type="revolute">
-        <parent link="head_link" />
-        <child link="left_eye_link" />
-        <origin xyz="0.03 0.03 0" rpy="0 0 0" />
-        <axis xyz="0 0 1" />
-        <limit lower="-0.5" upper="0.5" effort="1" velocity="1.0" />
+    <joint name="base_link_head_base" type="fixed">
+        <parent link="base_link" />
+        <child link="head_base" />
+        <origin xyz="${base_width/4} 0 ${base_height+0.07}" rpy="0 0 0" />
     </joint>
 </robot>
