@@ -5,14 +5,14 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://description/mashes/lidar_base.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://description/meshes/lidar_base.stl" scale="0.001 0.001 0.001" />
             </geometry>
             <material name="white" />
         </visual>
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="package://description/mashes/lidar_base.stl" scale="0.001 0.001 0.001" />
+                <mesh filename="package://description/meshes/lidar_base.stl" scale="0.001 0.001 0.001" />
             </geometry>
         </collision>
         <xacro:box_inertia m="0.11" x="0.15" y="0.15" z="0.072" o_xyz="0 0 0" o_rpy="0 0 0" />

@@ -12,7 +12,7 @@ find_package(ament_cmake REQUIRED)
 # find_package(<dependency> REQUIRED)
 
 install(
-  DIRECTORY urdf mashes launch rviz ros2_control
+  DIRECTORY urdf meshes launch rviz ros2_control
   DESTINATION share/${PROJECT_NAME}
 )
 
