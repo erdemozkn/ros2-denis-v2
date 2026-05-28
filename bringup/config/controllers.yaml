@@ -7,6 +7,9 @@ controller_manager:
     diff_drive_controller:
       type: diff_drive_controller/DiffDriveController
 
+    head_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
 
 diff_drive_controller:
   ros__parameters:
@@ -19,3 +22,16 @@ diff_drive_controller:
     right_wheel_names: ['base_link_right_wheel_joint']
     wheel_separation: 0.38
     wheel_radius: 0.025
+
+head_controller:
+  ros__parameters:
+    joints:
+      - head_base_neck_pan_link
+      - head_base_tilt_pan_link
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    state_publish_rate: 50.0
+    action_monitor_rate: 20.0

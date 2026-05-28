@@ -79,11 +79,19 @@ def generate_launch_description():
         output='screen'
     )
 
+    head_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["head_controller", "--controller-manager-timeout", "35.0"],
+        output='screen'
+    )
+
     bridge_params = os.path.join(pkg_denis_bringup, 'config', 'bridge.yaml')
     ros_gz_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
         arguments=['--ros-args', '-p', f'config_file:={bridge_params}'],
+        parameters=[{'use_sim_time': True}],
         output='screen'
     )
 
@@ -97,7 +105,8 @@ def generate_launch_description():
             period=6.0,
             actions=[
                 joint_broad_spawner,
-                diff_drive_spawner
+                diff_drive_spawner,
+                head_controller_spawner
             ]
         ),
     ])
