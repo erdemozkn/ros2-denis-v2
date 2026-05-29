@@ -11,6 +11,10 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 _desc_share = get_package_share_directory('description')
 _gz_resource_path = os.path.dirname(_desc_share)  # .../install/description/share
+
+_bringup_share = get_package_share_directory('bringup')
+_gz_resource_path += ':' + _bringup_share  # exposes bringup/share/bringup/models/
+
 os.environ['GZ_SIM_RESOURCE_PATH'] = (
     os.environ.get('GZ_SIM_RESOURCE_PATH', '') + ':' + _gz_resource_path
 )
@@ -95,6 +99,29 @@ def generate_launch_description():
         output='screen'
     )
 
+    # Spawn orange ball 2 m in front of the robot (robot is at x=-1, y=1)
+    ball_sdf = os.path.join(pkg_denis_bringup, 'models', 'orange_ball', 'model.sdf')
+    spawn_ball = Node(
+        package='ros_gz_sim',
+        executable='create',
+        arguments=[
+            '-file', ball_sdf,
+            '-name', 'orange_ball',
+            '-x', '1.5',
+            '-y', '1.0',
+            '-z', '5.5',
+        ],
+        output='screen'
+    )
+
+    ball_tracker = Node(
+        package='ball_tracker',
+        executable='ball_tracker_node',
+        name='ball_tracker',
+        parameters=[{'use_sim_time': True}],
+        output='screen'
+    )
+
     return LaunchDescription([
         rsp,
         world_arg,
@@ -106,7 +133,9 @@ def generate_launch_description():
             actions=[
                 joint_broad_spawner,
                 diff_drive_spawner,
-                head_controller_spawner
+                head_controller_spawner,
+                spawn_ball,
+                ball_tracker,
             ]
         ),
     ])
