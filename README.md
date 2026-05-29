@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project is a small autonomous robot with a differential drive system. The robot has two main wheels and one caster wheel for balance. It also includes a movable neck and head system with eyes. The main goal of the project is to create a robot that can detect a human face and turn its head toward the person.
+This project is a small autonomous robot with a differential drive system. The robot has two main wheels and two caster wheel for balance. It also includes a movable neck and head system with eyes. The main goal of the project is to create a robot that can detect a human face and turn its head toward the person.
 
 The robot is designed for learning and experimentation in robotics, ROS 2, computer vision, and motion control.
 
