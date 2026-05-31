@@ -99,28 +99,37 @@ def generate_launch_description():
         output='screen'
     )
 
-    # Spawn orange ball 2 m in front of the robot (robot is at x=-1, y=1)
-    ball_sdf = os.path.join(pkg_denis_bringup, 'models', 'orange_ball', 'model.sdf')
-    spawn_ball = Node(
-        package='ros_gz_sim',
-        executable='create',
-        arguments=[
-            '-file', ball_sdf,
-            '-name', 'orange_ball',
-            '-x', '1.5',
-            '-y', '1.0',
-            '-z', '5.5',
-        ],
-        output='screen'
-    )
+    # # Spawn orange ball 2 m in front of the robot (robot is at x=-1, y=1)
+    # ball_sdf = os.path.join(pkg_denis_bringup, 'models', 'orange_ball', 'model.sdf')
+    # spawn_ball = Node(
+    #     package='ros_gz_sim',
+    #     executable='create',
+    #     arguments=[
+    #         '-file', ball_sdf,
+    #         '-name', 'orange_ball',
+    #         '-x', '1.5',
+    #         '-y', '1.0',
+    #         '-z', '5.5',
+    #     ],
+    #     output='screen'
+    # )
 
-    ball_tracker = Node(
-        package='ball_tracker',
-        executable='ball_tracker_node',
-        name='ball_tracker',
+    # ball_tracker = Node(
+    #     package='ball_tracker',
+    #     executable='ball_tracker_node',
+    #     name='ball_tracker',
+    #     parameters=[{'use_sim_time': True}],
+    #     output='screen'
+    # )
+
+    face_detection = Node(
+        package='object_detection',
+        executable='face_detection',
+        name='face_detection_node',
         parameters=[{'use_sim_time': True}],
         output='screen'
     )
+
 
     return LaunchDescription([
         rsp,
@@ -134,8 +143,9 @@ def generate_launch_description():
                 joint_broad_spawner,
                 diff_drive_spawner,
                 head_controller_spawner,
-                spawn_ball,
-                ball_tracker,
+                face_detection,
+                # spawn_ball,
+                # ball_tracker,
             ]
         ),
     ])
